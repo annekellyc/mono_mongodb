@@ -16,6 +16,3 @@
 
 #!/bin/env/ python 
 
-# Clear an entire table.
-def clear_table(table):
-    table.drop()
