@@ -14,8 +14,19 @@
 # You should have received a copy of the GNU General Public License along 
 # with mono_mongodb. If not, see http://www.gnu.org/licenses/.
 
+
 #!/bin/env/ python 
 
-# Clear an entire table.
-def clear_table(table):
-    table.drop()
+import clear
+import connectionmongodb
+import generator
+import constant
+import datetime
+
+# Connection with MongoDB
+
+k
+# Function to insert new documents 
+def insert(db, documents):
+  for document in documents:
+    db.posts.insert(document)

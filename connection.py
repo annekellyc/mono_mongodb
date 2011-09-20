@@ -16,6 +16,10 @@
 
 #!/bin/env/ python 
 
-# Clear an entire table.
-def clear_table(table):
-    table.drop()
+import pymongo
+from pymongo import Connection
+
+# Creates a connection to MongoDB.
+def create():
+    connection = Connection()
+    return connection.mongo_database

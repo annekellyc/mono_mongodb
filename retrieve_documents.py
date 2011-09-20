@@ -14,8 +14,31 @@
 # You should have received a copy of the GNU General Public License along 
 # with mono_mongodb. If not, see http://www.gnu.org/licenses/.
 
+
 #!/bin/env/ python 
 
-# Clear an entire table.
-def clear_table(table):
-    table.drop()
+import clear
+import connectionmongodb
+import insertdocs
+
+# Connection with MongoDB
+db = connectionmongodb.create_connection()
+
+# Function to clear all posts before insert new documents 
+def initialize_finalize():
+    clear.drop_posts(db)
+
+# Function to select all documents
+def get_documents(doc):
+    for post in doc.find():        
+        print post    
+   
+# Call the function get_documents
+try:
+    initialize_finalize()
+    documents = insertdocs.insert_documents()
+    print "--> Documents:"
+    get_documents(documents)
+    initialize_finalize()
+except Exception:
+    print "--> Erro ao recuperar o(s) documento(s)!"
