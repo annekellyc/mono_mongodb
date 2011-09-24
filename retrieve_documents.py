@@ -17,28 +17,20 @@
 
 #!/bin/env/ python 
 
-import clear
-import connectionmongodb
-import insertdocs
+import time
 
-# Connection with MongoDB
-db = connectionmongodb.create_connection()
+# Function to retrieve documents 
+def retrieve(db, documents):
+    try:
+        start = time.clock()
+        for document in documents:
+            db.posts.find_one({ 'author': document['author'] })
+            #print "Text: " + document['text'] + " ",
+        elapsed = (time.clock() - start)    
+        print "--> " + str(len(documents)) + " retrieved document(s). " + "Time: " + str(elapsed)
+    except Exception:
+        print "--> Erro ao recuperar o(s) documento(s)."
 
-# Function to clear all posts before insert new documents 
-def initialize_finalize():
-    clear.drop_posts(db)
+        
 
-# Function to select all documents
-def get_documents(doc):
-    for post in doc.find():        
-        print post    
-   
-# Call the function get_documents
-try:
-    initialize_finalize()
-    documents = insertdocs.insert_documents()
-    print "--> Documents:"
-    get_documents(documents)
-    initialize_finalize()
-except Exception:
-    print "--> Erro ao recuperar o(s) documento(s)!"
+

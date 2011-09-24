@@ -17,3 +17,28 @@
 
 #!/bin/env/ python 
 
+import time
+import generator
+import constants
+import datetime
+
+def update(db, documents):
+    try:
+        start = time.clock()
+        for document in documents:
+            db.posts.update({"author": document['author']}, {                    
+                              "author": "Updated post! " + str(document['author']) ,
+                              "text": generator.generate_word(constants.number_of_letters),
+                              "tags": ["mongodb", "python", "pymongo"],
+                              "date": datetime.datetime.utcnow(),
+                              "category": {
+                                "name": generator.generate_word(constants.number_of_letters),
+                                "description": generator.generate_word(constants.number_of_letters)
+                              }
+                            })
+        elapsed = (time.clock() - start)   
+        print "--> " + str(len(documents)) + " updated document(s). " + "Time: " + str(elapsed)
+    except Exception:
+        print "--> Erro ao atualizar o(s) documento(s)."         
+
+

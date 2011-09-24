@@ -20,53 +20,87 @@ import insert_documents
 import delete_documents
 import retrieve_documents
 import update_documents
-
+import connection
 import generator
-
 import clear
 
 db = connection.create()
 
-scenario_01 = generator.generate_post(10)
-scenario_02 = generator.generate_post(100)
-scenario_03 = generator.generate_post(1000)
-
-def run():
-
-  init()
-
-try:
-  execute_insert_document_tests()
-except Exception:
-  print "--> Erro ao inserir o(s) documento(s)."
-
-  execute_update_document_tests()
-  execute_delete_document_tests()
-  execute_update_document_tests()
-  
-  finalize()
-
-def execute_insert_document_tests():
-  # Executes the first scenario
-  insert_documents.insert(db, scenario_01)
-
-  # Executes the second scenario
-  insert_documents.insert(db, scenario_02)
-
-  # Executes the third scenario
-  insert_documents.insert(db, scenario_03)
-
-def execute_retrieve_document_tests():
-  pass
-
-def execute_update_document_tests():
-  pass
-
-def execute_delete_document_tests():
-  pass
+scenario_01 = generator.generate_post(1)
+scenario_02 = generator.generate_post(5)
+scenario_03 = generator.generate_post(50)
+scenario_04 = generator.generate_post(100)
+scenario_05 = generator.generate_post(500)
+scenario_06 = generator.generate_post(1000)
+#scenario_07 = generator.generate_post(5000)
+#scenario_08 = generator.generate_post(10000)
+#scenario_09 = generator.generate_post(25000)
+#scenario_10 = generator.generate_post(50000)
+#scenario_11 = generator.generate_post(75000)
+#scenario_12 = generator.generate_post(100000)
+#scenario_13 = generator.generate_post(1000000)
 
 def init():
     clear.clear_table(db.posts)
 
 def finalize():
     clear.clear_table(db.posts)
+
+def execute_insert_document_tests():
+
+    print "\n::: RESULT INSERT :::\n"
+
+    insert_documents.insert(db, scenario_01)
+    insert_documents.insert(db, scenario_02)
+    insert_documents.insert(db, scenario_03)
+    insert_documents.insert(db, scenario_04)
+    insert_documents.insert(db, scenario_05)
+    insert_documents.insert(db, scenario_06)
+
+def execute_retrieve_document_tests():    
+
+    print "\n::: RESULT RETRIEVE :::\n"
+
+    retrieve_documents.retrieve(db, scenario_01)
+    retrieve_documents.retrieve(db, scenario_02)            
+    retrieve_documents.retrieve(db, scenario_03)
+    retrieve_documents.retrieve(db, scenario_04)
+    retrieve_documents.retrieve(db, scenario_05)
+    retrieve_documents.retrieve(db, scenario_06)
+
+def execute_update_document_tests():
+    
+    print "\n::: RESULT UPDATE :::\n"
+    
+    update_documents.update(db, scenario_01)
+    update_documents.update(db, scenario_02)    
+    update_documents.update(db, scenario_03)
+    update_documents.update(db, scenario_04)
+    update_documents.update(db, scenario_05)
+    update_documents.update(db, scenario_06)
+    
+def execute_delete_document_tests():
+    
+    print "\n::: RESULT DELETE :::\n"
+    
+    delete_documents.remove(db, scenario_01)
+    delete_documents.remove(db, scenario_02)
+    delete_documents.remove(db, scenario_03)
+    delete_documents.remove(db, scenario_04)
+    delete_documents.remove(db, scenario_05)
+    delete_documents.remove(db, scenario_06)
+
+def execute():
+    try:
+        init()
+        execute_insert_document_tests()
+        execute_retrieve_document_tests()
+        execute_update_document_tests()
+        execute_delete_document_tests()
+        finalize()        
+    
+    except Exception:
+        print "--> Erro ao executar o programa."
+        
+execute()
+

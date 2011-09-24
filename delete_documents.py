@@ -16,3 +16,17 @@
 
 #!/bin/env/ python 
 
+import time
+
+def remove(db, documents):
+    try:
+        start = time.clock()
+        for document in documents:
+            db.posts.remove({ 'author': document['author'] })            
+        elapsed = (time.clock() - start)    
+        print "--> " + str(len(documents)) + " deleted document(s). " + "Time: " + str(elapsed)
+    except Exception:
+        print "--> Erro ao excluir o(s) documento(s)."    
+    
+    
+

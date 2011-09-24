@@ -18,15 +18,18 @@
 #!/bin/env/ python 
 
 import clear
-import connectionmongodb
+import connection
 import generator
-import constant
 import datetime
+import time
 
-# Connection with MongoDB
-
-k
 # Function to insert new documents 
 def insert(db, documents):
-  for document in documents:
-    db.posts.insert(document)
+    try:
+        start = time.clock()
+        for i in range(len(documents)):
+            db.posts.insert(documents[i])
+        elapsed = (time.clock() - start)    
+        print "--> " + str(i +1) + " inserted document(s). " + "Time: " + str(elapsed)
+    except Exception:
+        print "--> Erro ao inserir o(s) documento(s)."

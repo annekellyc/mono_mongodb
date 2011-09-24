@@ -18,6 +18,8 @@
 #!/bin/env/ python 
 
 import random
+import constants
+import datetime
 
 # Function to create letters randomly
 def generate_word(number_of_letters):
@@ -30,16 +32,18 @@ def generate_word(number_of_letters):
 def generate_post(number_of_posts):
     posts = []
     for p in xrange(number_of_posts):
-        post = [{                    
-          "author": generator.generate_word(constant.number_of_letters),
-          "text": generator.generate_word(constant.number_of_letters),
+        post = {                    
+          "author": generate_word(constants.number_of_letters),
+          "text": generate_word(constants.number_of_letters),
           "tags": ["mongodb", "python", "pymongo"],
           "date": datetime.datetime.utcnow(),
           "category": {
-            "name": generator.generate_word(constant.number_of_letters),
-            "description": generator.generate_word(constant.number_of_letters)
+            "name": generate_word(constants.number_of_letters),
+            "description": generate_word(constants.number_of_letters)
           }
-        }]        
+        }   
         posts.append(post)
 
     return posts
+
+   
