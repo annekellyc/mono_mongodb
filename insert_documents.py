@@ -26,10 +26,13 @@ import time
 # Function to insert new documents 
 def insert(db, documents):
     try:
-        start = time.clock()
+        start_c = time.clock()
+        start_t = time.time()
         for i in range(len(documents)):
             db.posts.insert(documents[i])
-        elapsed = (time.clock() - start)    
-        print "--> " + str(i +1) + " inserted document(s). " + "Time: " + str(elapsed)
+        elapsed_c = (time.clock() - start_c)
+        elapsed_t = (time.time() - start_t)   
+        message = "--> " + str(i +1) + " inserted document(s).\n " + "Time: " + str(elapsed_c) + " seconds process time and " + str(elapsed_t) + " seconds real time.\n"           
+        print message
     except Exception:
-        print "--> Erro ao inserir o(s) documento(s)."
+        print "--> Error inserting document(s)."

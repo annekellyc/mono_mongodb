@@ -19,5 +19,4 @@
 # Number of letters to be generated randomly
 number_of_letters = 10
 
-# Number of documents to be insert
-number_of_docs = 42
+

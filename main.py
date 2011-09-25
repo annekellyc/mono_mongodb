@@ -23,84 +23,72 @@ import update_documents
 import connection
 import generator
 import clear
+import sys
 
-db = connection.create()
-
-scenario_01 = generator.generate_post(1)
-scenario_02 = generator.generate_post(5)
-scenario_03 = generator.generate_post(50)
-scenario_04 = generator.generate_post(100)
-scenario_05 = generator.generate_post(500)
-scenario_06 = generator.generate_post(1000)
-#scenario_07 = generator.generate_post(5000)
-#scenario_08 = generator.generate_post(10000)
-#scenario_09 = generator.generate_post(25000)
-#scenario_10 = generator.generate_post(50000)
-#scenario_11 = generator.generate_post(75000)
-#scenario_12 = generator.generate_post(100000)
-#scenario_13 = generator.generate_post(1000000)
-
-def init():
-    clear.clear_table(db.posts)
-
-def finalize():
-    clear.clear_table(db.posts)
-
-def execute_insert_document_tests():
-
-    print "\n::: RESULT INSERT :::\n"
-
-    insert_documents.insert(db, scenario_01)
-    insert_documents.insert(db, scenario_02)
-    insert_documents.insert(db, scenario_03)
-    insert_documents.insert(db, scenario_04)
-    insert_documents.insert(db, scenario_05)
-    insert_documents.insert(db, scenario_06)
-
-def execute_retrieve_document_tests():    
-
-    print "\n::: RESULT RETRIEVE :::\n"
-
-    retrieve_documents.retrieve(db, scenario_01)
-    retrieve_documents.retrieve(db, scenario_02)            
-    retrieve_documents.retrieve(db, scenario_03)
-    retrieve_documents.retrieve(db, scenario_04)
-    retrieve_documents.retrieve(db, scenario_05)
-    retrieve_documents.retrieve(db, scenario_06)
-
-def execute_update_document_tests():
+if len(sys.argv) <= 1 or len(sys.argv) != 2:
+    print "--> Invalid input. Please type 'insert', 'retrieve', 'update' or 'delete' to run the program."
+elif str(sys.argv[1]) != "insert"  and str(sys.argv[1]) != "retrieve" and str(sys.argv[1]) != "update" and str(sys.argv[1]) != "delete":
+    print "--> Invalid input. Please type 'insert', 'retrieve', 'update' or 'delete' to run the program."
+else:
+    db = connection.create()
     
-    print "\n::: RESULT UPDATE :::\n"
-    
-    update_documents.update(db, scenario_01)
-    update_documents.update(db, scenario_02)    
-    update_documents.update(db, scenario_03)
-    update_documents.update(db, scenario_04)
-    update_documents.update(db, scenario_05)
-    update_documents.update(db, scenario_06)
-    
-def execute_delete_document_tests():
-    
-    print "\n::: RESULT DELETE :::\n"
-    
-    delete_documents.remove(db, scenario_01)
-    delete_documents.remove(db, scenario_02)
-    delete_documents.remove(db, scenario_03)
-    delete_documents.remove(db, scenario_04)
-    delete_documents.remove(db, scenario_05)
-    delete_documents.remove(db, scenario_06)
+    print "\n--> Preparing test scenario. It may take a few minutes."
+    scenario_01 = generator.generate_post(10)
+    scenario_02 = generator.generate_post(100)
+    scenario_03 = generator.generate_post(1000)
+    scenario_04 = generator.generate_post(10000)
+    #scenario_05 = generator.generate_post(100000)
+    #scenario_06 = generator.generate_post(1000000)    
+    scenario_list = [scenario_01, scenario_02, scenario_03, scenario_04]
 
-def execute():
-    try:
-        init()
-        execute_insert_document_tests()
-        execute_retrieve_document_tests()
-        execute_update_document_tests()
-        execute_delete_document_tests()
-        finalize()        
-    
-    except Exception:
-        print "--> Erro ao executar o programa."
-        
-execute()
+    def init():
+        clear.clear_table(db.posts)
+
+    def finalize():
+        clear.clear_table(db.posts)
+
+    def execute_function(function, db):
+        print "\n::: START RUNNING THE TEST MONGODB WITH " + str(len(scenario_list)) + " SCENARIOS :::\n"               
+       
+        number_of_doc = 100 
+        key_input = "Y"
+        number_scenario = 1                 
+        for scenario in scenario_list:   
+            if (key_input == "Y" or key_input == "y"):
+                print "\nSCENARIO " + str(number_scenario)
+                init()                
+                if function != insert_documents.insert:
+                    insert_documents.insert(db, scenario)                                     
+                function(db, scenario)                                        
+                finalize()                                    
+                if scenario == scenario_list[-1]:                    
+                    break
+                message = "--> Do you want to run the next scenario with " + str(number_of_doc) + " documents ([Y] / N)?: "
+                key_input = raw_input(message)
+                number_of_doc = number_of_doc * 10 
+                number_scenario += 1   
+            elif (key_input == "N" or key_input == "n"):
+                print "\n--> Test finished.\n"
+                break
+            else:
+                print "\n--> Invalid command.\n"               
+                break
+                    
+    def execute_program():
+        try:            
+            param = str(sys.argv[1])       
+            if param == "insert":            
+                execute_function(insert_documents.insert, db)
+            if param == "retrieve":            
+                execute_function(retrieve_documents.retrieve, db)
+            if param == "update":
+                execute_function(update_documents.update, db)
+            if param == "delete":
+                execute_function(delete_documents.remove, db)
+        except Exception:
+            print "--> Error executing the program."
+
+    execute_program()
+            
+
 

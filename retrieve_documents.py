@@ -22,14 +22,17 @@ import time
 # Function to retrieve documents 
 def retrieve(db, documents):
     try:
-        start = time.clock()
+        start_c = time.clock()
+        start_t = time.time()
         for document in documents:
             db.posts.find_one({ 'author': document['author'] })
             #print "Text: " + document['text'] + " ",
-        elapsed = (time.clock() - start)    
-        print "--> " + str(len(documents)) + " retrieved document(s). " + "Time: " + str(elapsed)
+        elapsed_c = (time.clock() - start_c)
+        elapsed_t = (time.time() - start_t)   
+        message = "--> " + str(len(documents)) + " retrieved document(s).\n " + "Time: " + str(elapsed_c) + " seconds process time and " + str(elapsed_t) + " seconds real time.\n"           
+        print message
     except Exception:
-        print "--> Erro ao recuperar o(s) documento(s)."
+        print "--> Error retrieving document(s)."
 
         
 
