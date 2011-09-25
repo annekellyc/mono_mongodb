@@ -48,7 +48,7 @@ else:
         clear.clear_table(db.posts)
 
     def execute_function(function, db):
-        print "\n::: START RUNNING THE TEST MONGODB WITH " + str(len(scenario_list)) + " SCENARIOS :::\n"               
+        print "\n::: START RUNNING THE MONGODB TESTS WITH " + str(len(scenario_list)) + " SCENARIOS :::\n"               
        
         number_of_doc = 100 
         key_input = "Y"
