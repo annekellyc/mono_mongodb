@@ -22,7 +22,7 @@ import generator
 import constants
 import datetime
 
-def update(db, documents):
+def update(db, documents, message):
     try:
         start_c = time.clock()
         start_t = time.time()
@@ -39,8 +39,8 @@ def update(db, documents):
                             })
         elapsed_c = (time.clock() - start_c)
         elapsed_t = (time.time() - start_t)   
-        message = "--> " + str(len(documents)) + " updated document(s).\n " + "Time: " + str(elapsed_c) + " seconds process time and " + str(elapsed_t) + " seconds real time.\n"           
-        print message
+        if message == True:
+            print "--> " + str(len(documents)) + " updated document(s).\n " + "Time: " + str(elapsed_c) + " seconds process time and " + str(elapsed_t) + " seconds real time.\n"           
     except Exception:
         print "--> Error updating document(s)."         
 

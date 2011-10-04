@@ -24,6 +24,7 @@ import connection
 import generator
 import clear
 import sys
+from datetime import datetime
 
 if len(sys.argv) <= 1 or len(sys.argv) != 2:
     print "--> Invalid input. Please type 'insert', 'retrieve', 'update' or 'delete' to run the program."
@@ -37,9 +38,8 @@ else:
     scenario_02 = generator.generate_post(100)
     scenario_03 = generator.generate_post(1000)
     scenario_04 = generator.generate_post(10000)
-    #scenario_05 = generator.generate_post(100000)
-    #scenario_06 = generator.generate_post(1000000)    
-    scenario_list = [scenario_01, scenario_02, scenario_03, scenario_04]
+    scenario_05 = generator.generate_post(100000)
+    scenario_list = [scenario_01, scenario_02, scenario_03, scenario_04, scenario_05]
 
     def init():
         clear.clear_table(db.posts)
@@ -51,29 +51,17 @@ else:
         print "\n::: START RUNNING THE MONGODB TESTS WITH " + str(len(scenario_list)) + " SCENARIOS :::\n"               
        
         number_of_doc = 100 
-        key_input = "Y"
         number_scenario = 1                 
-        for scenario in scenario_list:   
-            if (key_input == "Y" or key_input == "y"):
-                print "\nSCENARIO " + str(number_scenario)
-                init()                
-                if function != insert_documents.insert:
-                    insert_documents.insert(db, scenario)                                     
-                function(db, scenario)                                        
-                finalize()                                    
-                if scenario == scenario_list[-1]:                    
-                    break
-                message = "--> Do you want to run the next scenario with " + str(number_of_doc) + " documents ([Y] / N)?: "
-                key_input = raw_input(message)
-                number_of_doc = number_of_doc * 10 
-                number_scenario += 1   
-            elif (key_input == "N" or key_input == "n"):
-                print "\n--> Test finished.\n"
-                break
-            else:
-                print "\n--> Invalid command.\n"               
-                break
-                    
+        for scenario in scenario_list:           
+            print "\nSCENARIO " + str(number_scenario) + " " + str(datetime.now())
+            init()                
+            if function != insert_documents.insert:
+                insert_documents.insert(db, scenario, False)                                     
+            function(db, scenario, True)                                        
+            finalize()                                                    
+            number_of_doc = number_of_doc * 10 
+            number_scenario += 1   
+                                
     def execute_program():
         try:            
             param = str(sys.argv[1])       
@@ -89,6 +77,6 @@ else:
             print "--> Error executing the program."
 
     execute_program()
-            
+    print "End: " + str(datetime.now())            
 
 

@@ -22,17 +22,21 @@ import connection
 import generator
 import datetime
 import time
+import pymongo
 
 # Function to insert new documents 
-def insert(db, documents):
+def insert(db, documents, message):
     try:
         start_c = time.clock()
         start_t = time.time()
         for i in range(len(documents)):
             db.posts.insert(documents[i])
+            
+        db.posts.ensure_index([("author", pymongo.ASCENDING)])
+        
         elapsed_c = (time.clock() - start_c)
         elapsed_t = (time.time() - start_t)   
-        message = "--> " + str(i +1) + " inserted document(s).\n " + "Time: " + str(elapsed_c) + " seconds process time and " + str(elapsed_t) + " seconds real time.\n"           
-        print message
+        if message == True:
+            print "--> " + str(i +1) + " inserted document(s).\n " + "Time: " + str(elapsed_c) + " seconds process time and " + str(elapsed_t) + " seconds real time.\n"           
     except Exception:
         print "--> Error inserting document(s)."

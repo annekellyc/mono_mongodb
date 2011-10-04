@@ -18,7 +18,7 @@
 
 import time
 
-def remove(db, documents):
+def remove(db, documents, message):
     try:
         start_c = time.clock()
         start_t = time.time()
@@ -26,8 +26,8 @@ def remove(db, documents):
             db.posts.remove({ 'author': document['author'] })            
         elapsed_c = (time.clock() - start_c)
         elapsed_t = (time.time() - start_t)   
-        message = "--> " + str(len(documents)) + " deleted document(s).\n " + "Time: " + str(elapsed_c) + " seconds process time and " + str(elapsed_t) + " seconds real time.\n"           
-        print message
+        if message == True:
+            print "--> " + str(len(documents)) + " deleted document(s).\n " + "Time: " + str(elapsed_c) + " seconds process time and " + str(elapsed_t) + " seconds real time.\n"           
     except Exception:
         print "--> Error deleting document(s)."    
     
